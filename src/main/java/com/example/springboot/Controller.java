@@ -57,7 +57,7 @@ class Controller {
         updateLists.put("buyList", matcher.buyList);
         updateLists.put("sellList", matcher.sellList);
         updateLists.put("agBuyList", matcher.agBuyList);
-        updateLists.put("agSellList", matcher.agBuyList);
+        updateLists.put("agSellList", matcher.agSellList);
 
         return (updateLists);
     }

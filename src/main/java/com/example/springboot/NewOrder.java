@@ -8,7 +8,6 @@ import lombok.Data;
 class NewOrder {
 
 
-
     private final String account;
     private final int price;
     private int quantity;
