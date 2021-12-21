@@ -1,6 +1,8 @@
 package com.example.springboot;
 
-class NewOrder extends JavaTrainingApp {
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+class NewOrder {
 
     String account;
     String action;
@@ -8,7 +10,7 @@ class NewOrder extends JavaTrainingApp {
     int price;
     int quantity;
 
-
+    @JsonCreator
     public NewOrder(String account, int price, int quantity, String action) {
         this.account = account;
         this.price = price;
@@ -22,7 +24,6 @@ class NewOrder extends JavaTrainingApp {
                 "account='" + account + '\'' +
                 ", action='" + action + '\'' +
                 ", price=" + price +
-                ", quantity=" + quantity +
-                '}';
+                ", quantity=" + quantity;
     }
 }

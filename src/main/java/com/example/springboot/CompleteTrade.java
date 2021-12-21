@@ -1,6 +1,6 @@
 package com.example.springboot;
 
-public class CompleteTrade extends JavaTrainingApp{
+public class CompleteTrade {
     String accountFrom = "";
     String accountTo = "";
     int price = 0;
@@ -19,7 +19,6 @@ public class CompleteTrade extends JavaTrainingApp{
                 "accountFrom='" + accountFrom + '\'' +
                 ", accountTo='" + accountTo + '\'' +
                 ", price=" + price +
-                ", quantity=" + quantity +
-                '}';
+                ", quantity=" + quantity;
     }
 }

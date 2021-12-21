@@ -4,18 +4,19 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @SpringBootApplication
 public class JavaTrainingApp {
 
-    ArrayList<NewOrder> buyList = new ArrayList<>();
-     ArrayList<NewOrder> sellList = new ArrayList<>();
-     ArrayList<CompleteTrade> completedTrades = new ArrayList<>();
-    ArrayList<int[]> agBuyList = new ArrayList<>();
-     ArrayList<int[]> agSellList = new ArrayList<>();
+    static ArrayList<NewOrder> buyList = new ArrayList<>();
+    static ArrayList<NewOrder> sellList = new ArrayList<>();
+    static ArrayList<CompleteTrade> completedTrades = new ArrayList<>();
+    static ArrayList<int[]> agBuyList = new ArrayList<>();
+    static ArrayList<int[]> agSellList = new ArrayList<>();
 
-    public void newOrder(NewOrder order) {
-        System.out.println("NEW ORDER");
+    public static void newOrder(NewOrder order) {
+//        System.out.println("NEW ORDER");
         if (order.action.equals("Buy")) {
             if (sellList.size() == 0) {
                 orderUnmatchedBuyers(order);
@@ -36,8 +37,8 @@ public class JavaTrainingApp {
 
     }
 
-    public void updateBuyTrade(NewOrder order) {
-        System.out.println("UPDATE BUY TRADE");
+    public static void updateBuyTrade(NewOrder order) {
+//        System.out.println("UPDATE BUY TRADE");
 
         if (order.quantity < sellList.get(0).quantity) {
             CompleteTrade completeTrade = new CompleteTrade(sellList.get(0).account, order.account, sellList.get(0).price, order.quantity);
@@ -63,8 +64,8 @@ public class JavaTrainingApp {
 
     }
 
-    public void updateSellTrade(NewOrder order) {
-        System.out.println("UPDATE SELL TRADE");
+    public static void updateSellTrade(NewOrder order) {
+//        System.out.println("UPDATE SELL TRADE");
 
         if (order.quantity < buyList.get(0).quantity) {
             CompleteTrade completeTrade = new CompleteTrade(order.account, buyList.get(0).account, order.price, order.quantity);
@@ -91,8 +92,9 @@ public class JavaTrainingApp {
 
     }
 
-    public void aggregateListIncreaseEditor(ArrayList<int[]> listToBeEdited, int position, int quantityIncrease) {
-        System.out.println("AGGREGATE LIST INCREASE EDITOR");
+    public static void aggregateListIncreaseEditor(ArrayList<int[]> listToBeEdited, int position, int quantityIncrease) {
+//        System.out.println("AGGREGATE LIST INCREASE EDITOR");
+
 
         int i = position + 1;
         while (i < listToBeEdited.size()) {
@@ -101,12 +103,23 @@ public class JavaTrainingApp {
             listToBeEdited.set(i, updatedAgPriceQuantity);
             i++;
         }
+
     }
 
-    public void aggregateListDecreaseEditor(ArrayList<int[]> listToBeEdited, int quantity) {
-        System.out.println("AGGREGATE LIST DECREASE EDITOR");
+    public static void aggregateListDecreaseEditor(ArrayList<int[]> listToBeEdited, int quantity) {
+//        if (listToBeEdited == agSellList) {
+//
+//        System.out.println("AGGREGATE LIST DECREASE EDITOR");
+//        System.out.println("BEFORE");
+//
+//        for (int[] arr : agSellList) {
+//            System.out.println(Arrays.toString(arr));}
+//        System.out.println(quantity);}
+
 
         int newQuantity = listToBeEdited.get(listToBeEdited.size() - 1)[1] - quantity;
+        int[] updatedAgPriceQuantity = {listToBeEdited.get(listToBeEdited.size() - 1)[0], newQuantity};
+        listToBeEdited.set(listToBeEdited.size() - 1, updatedAgPriceQuantity);
 
         if (listToBeEdited.size() == 1) {
             if (newQuantity == 0) {
@@ -117,11 +130,17 @@ public class JavaTrainingApp {
                 listToBeEdited.remove(listToBeEdited.size() - 1);
             }
         }
-
+//        if (listToBeEdited == agSellList) {
+//            System.out.println("UPDATE");
+//            System.out.println(agSellList.size());
+//            for (int[] arr : agSellList) {
+//                System.out.println(Arrays.toString(arr));
+//            }
+//        }
     }
 
-    public void orderUnmatchedBuyers(NewOrder order) {
-        System.out.println("ORDER UNMATCHED BUYERS");
+    public static void orderUnmatchedBuyers(NewOrder order) {
+//        System.out.println("ORDER UNMATCHED BUYERS");
 
         int[] priceOrder = {order.price, order.quantity};
 
@@ -176,8 +195,11 @@ public class JavaTrainingApp {
 
     }
 
-    public void orderUnmatchedSellers(NewOrder order) {
-        System.out.println("ORDER UNMATCHED SELLERS");
+    public static void orderUnmatchedSellers(NewOrder order) {
+//        System.out.println("ORDER UNMATCHED SELLERS");
+//        for (int[] arr : agSellList) {
+//            System.out.println(Arrays.toString(arr));
+//        }
 
         int[] priceOrder = {order.price, order.quantity};
 
@@ -193,15 +215,19 @@ public class JavaTrainingApp {
                 int[] updatedAgPriceQuantity = {order.price, newQuantity};
                 agSellList.set(0, updatedAgPriceQuantity);
             }
+
             if (agSellList.size() > 1) {
                 aggregateListIncreaseEditor(agSellList, 0, order.quantity);
             }
         } else if (sellList.get(0).price > order.price) {
+
             sellList.add(0, order);
             int newQuantity = order.quantity + agSellList.get(agSellList.size() - 1)[1];
             int[] updatedAgPriceQuantity = {order.price, newQuantity};
             agSellList.add(updatedAgPriceQuantity);
         } else {
+
+
             int i = 0;
             while (sellList.get(i).price <= order.price) {
                 i++;
@@ -215,15 +241,18 @@ public class JavaTrainingApp {
                 j++;
             }
 
+
             if (agSellList.get(j)[0] == order.price) {
                 int newQuantity = agSellList.get(j)[1] + order.quantity;
                 int[] updatedAgPriceQuantity = {order.price, newQuantity};
                 agSellList.set(j, updatedAgPriceQuantity);
+
             } else {
                 int newQuantity = order.quantity + currentAggregate;
                 int[] updatedAgPriceQuantity = {order.price, newQuantity};
-                agSellList.set(j, updatedAgPriceQuantity);
+                agSellList.add(j, updatedAgPriceQuantity);
             }
+
 
             aggregateListIncreaseEditor(agSellList, j, order.quantity);
         }
@@ -251,14 +280,16 @@ public class JavaTrainingApp {
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(JavaTrainingApp.class).run(args);
-        System.out.println("HELLO");
 
-//        NewOrder Order1 = new NewOrder("account1", 10, 5, "Buy");
-//        NewOrder Order2 = new NewOrder("account2", 8, 10, "Buy");
-//        NewOrder Order3 = new NewOrder("account3", 9, 15, "Sell");
-//        NewOrder Order4 = new NewOrder("account4", 10, 5, "Buy");
-//        NewOrder Order5 = new NewOrder("account5", 10, 8, "Sell");
-//        NewOrder Order6 = new NewOrder("account6", 7, 5, "Sell");
+        NewOrder Order1 = new NewOrder("account1", 10, 5, "Buy");
+        NewOrder Order2 = new NewOrder("account2", 8, 10, "Buy");
+        NewOrder Order3 = new NewOrder("account3", 9, 15, "Sell");
+        NewOrder Order4 = new NewOrder("account4", 10, 5, "Buy");
+        NewOrder Order5 = new NewOrder("account5", 10, 8, "Sell");
+        NewOrder Order6 = new NewOrder("account6", 7, 5, "Sell");
+
+        newOrder(Order1);
+        System.out.println(buyList);
 //        newOrder(Order1);
 //        newOrder(Order2);
 //        newOrder(Order3);
